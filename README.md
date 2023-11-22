@@ -12,7 +12,7 @@ The most reliable way to use this code would be to clone this repo, activate the
     add https://github.com/maxhcohen/ReducedOrderModelCBFs.jl.git
 
 ## Quick tutorial
-We'll walk step-by-step through one of the examples that demonstrates the procedure used to construct CBFs via reduced-order models. The objective here is to design a controller for a double integrator to avoids an obstacle by extending a CBF for a single integrator to that for a double integrator
+We'll walk step-by-step through one of the examples that demonstrates the procedure used to construct CBFs via reduced-order models. The objective here is to design a controller for a double integrator to avoid an obstacle by extending a CBF for a single integrator to that for a double integrator
 
 First, we need to load the packages we'll use:
 
@@ -40,7 +40,7 @@ kd0(x) = -x # Desired controller for ROM
 k0 = SmoothSafetyFilter(Σ0, cbf0, kd0, formula="gaussian", σ=0.1);
 ```
 
-This smooth safety filter is not used to construct a CBF for the double-integrator:
+This smooth safety filter is now used to construct a CBF for the double-integrator:
 ```julia
 μ = 5.0
 h(x) = h0(x[1:2]) - (0.5/μ)*norm(x[3:4] - k0(x[1:2]))^2
