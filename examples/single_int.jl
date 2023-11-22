@@ -49,7 +49,7 @@ colors = get_colors()
         # xlabel=L"x_1",
         # ylabel=L"x_2",
         width="3.33in",
-        height="3.0in",
+        height="2.75in",
     },
     Plot({plt_theme..., color=colors[1]}, Coordinates(sol1.(ts, idxs=1), sol1.(ts, idxs=2))),
     Plot({plt_theme..., color=colors[2]}, Coordinates(sol2.(ts, idxs=1), sol2.(ts, idxs=2))),
@@ -66,7 +66,7 @@ pgfsave("single_int_states.pdf", ax1)
         xmin=0,
         xmax=T,
         width="3.33in",
-        height="1.75in",
+        height="1.25in",
     },
     Plot({plt_theme..., color=colors[1]}, Coordinates(ts, h.(sol1.(ts)))),
     Plot({plt_theme..., color=colors[2]}, Coordinates(ts, h.(sol2.(ts)))),
@@ -83,7 +83,7 @@ pgfsave("single_int_h.pdf", ax2)
         xmin=0,
         xmax=T,
         width="3.33in",
-        height="1.75in",
+        height="1.25in",
     },
     Plot({plt_theme..., color=colors[1]}, Coordinates(ts, norm.(k1.(sol1.(ts))))),
     Plot({plt_theme..., color=colors[2]}, Coordinates(ts, norm.(k2.(sol2.(ts))))),
@@ -91,18 +91,3 @@ pgfsave("single_int_h.pdf", ax2)
     Plot({plt_theme..., color=colors[3]}, Coordinates(ts, norm.(kd.(sol4.(ts))))),
 )
 pgfsave("single_int_controls.pdf", ax3)
-
-# Plot rate of CBF
-ḣ(x, u) = ∇h(x)'*(Σ.f(x) + Σ.g(x)*u)
-@pgf ax4 = Axis(
-    {
-        ax_theme...,
-        xmin=0,
-        xmax=T,
-        width="1.75in",
-        height="1.75in",
-    },
-    Plot({plt_theme..., color=colors[1]}, Coordinates(ts, ḣ.(sol1.(ts), k1.(sol1.(ts))))),
-    Plot({plt_theme..., color=colors[2]}, Coordinates(ts, ḣ.(sol2.(ts), k2.(sol2.(ts))))),
-    Plot({plt_theme..., color=colors[4]}, Coordinates(ts, ḣ.(sol3.(ts), k3.(sol3.(ts))))),
-)
