@@ -1,3 +1,13 @@
+"""
+    simulate(Σ::ControlAffineSystem, x0, T)
+    simulate(Σ::ControlAffineSystem, k, x0, T)
+    simulate(Σ::ControlAffineSystem, k::FeedbackController, x0, T)
+    simulate(Σ::RoboticSystem, q0, v0, T)
+    simulate(Σ::RoboticSystem, k, q0, v0, T)
+    simulate(Σ::RoboticSystem, k::FeedbackController, q0, v0, T)
+
+Simulate a system from an initial condition under a specified controller for a given time.
+"""
 function simulate(Σ::ControlAffineSystem, x0, T)
     function odefun(dx, x, p, t)
         dx[1:Σ.n] .= dynamics(Σ, x)

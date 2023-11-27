@@ -1,3 +1,17 @@
+"""
+    ControlBarrierFunction
+
+Control barrier function described by h ≥ 0 with extended class K function α.
+
+# Fields
+- `h::Function`: Function h : Rⁿ → R characterizing the safe set C={x ∈ Rⁿ : h(x) ≥ 0}
+- `α::Function`: Extended class K function used to define CBF inequality.
+
+# Constructors
+    ControlBarrierFunction(h::Function)
+    ControlBarrierFunction(h::Function, α::Float64)
+    ControlBarrierFunction(Σ::RoboticSystem, h0::Function, k0::Function, α::Function; μ=1.0)
+"""
 struct ControlBarrierFunction
     h::Function
     α::Function

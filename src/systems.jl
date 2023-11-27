@@ -19,6 +19,11 @@ dynamics(Σ::RoboticSystem, q, v, u) = Σ.M(q)\(Σ.B(q)*u - Σ.H(q,v))
 inverse_dynamics(Σ::RoboticSystem, q, v, v̇) = Σ.M(q)*v̇ + Σ.H(q,v)
 
 # Construct a control affine system from a robotic one
+"""
+    to_control_affine(Σ::RoboticSystem)
+
+Convert a robotic system into control affine form.
+"""
 function to_control_affine(Σ::RoboticSystem)
     n = 2*Σ.n
     m = Σ.m
