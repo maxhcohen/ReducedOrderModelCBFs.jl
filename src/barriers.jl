@@ -33,3 +33,13 @@ function ControlBarrierFunction(Σ::RoboticSystem, h0::Function, k0::Function, �
 
     return ControlBarrierFunction(h, α)
 end
+
+# Helper to get Lie derivatives
+function get_lie_derivatives(Σ::ControlAffineSystem, h::Function)
+    ∇h(x) = Σ.n == 1 ? ForwardDiff.derivative(h, x) : ForwardDiff.gradient(h, x)
+    Lfh(x) = ∇h(x)'Σ.f(x)
+    Lgh(x) = ∇h(x)'Σ.g(x)
+
+    return Lfh, Lgh
+end
+get_lie_derivatives(Σ::ControlAffineSystem, h::ControlBarrierFunction) = get_lie_derivatives(Σ, h.h)
