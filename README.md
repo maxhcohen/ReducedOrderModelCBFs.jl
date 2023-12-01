@@ -9,7 +9,7 @@ If you find this code useful, please consider citing some of the works mentioned
 ## Installation
 The most reliable way to use this code would be to clone this repo, activate the corresponding Julia environment, and then run the code examples. Alternatively, you can directly add this repo as an unregistered Julia package by entering the Julia package manager and executing:
 
-    add https://github.com/maxhcohen/ReducedOrderModelCBFs.jl.git
+    add https://github.com/maxhcohen/ReducedOrderModelCBFs.jl
 
 ## Quick tutorial
 We'll walk step-by-step through one of the examples that demonstrates the procedure used to construct CBFs via reduced-order models. The objective here is to design a controller for a double integrator to avoid an obstacle by extending a CBF for a single integrator to that for a double integrator
@@ -49,7 +49,7 @@ cbf = ControlBarrierFunction(h, s -> s);
 
 Finally, we construct a QP-based safety filter for the double-integrator:
 ```julia
-kd(x) = -x[1:2] - 2*x[3:4] # Desired controlelr for full-order model
+kd(x) = -x[1:2] - 2*x[3:4] # Desired controller for full-order model
 k = ReluSafetyFilter(Σ, cbf, kd);
 ```
 
