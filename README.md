@@ -66,31 +66,31 @@ I make all of my plots using [PGFPlotsX.jl](https://github.com/KristofferC/PGFPl
 ## Related Works
 
 ### Smooth Safety Filters
-- P. Ong and J. Cortes, “Universal formula for smooth safe stabilization,” in *Proc. Conf. Decis. Control*, pp. 2373–2378, 2019.
+- P. Ong and J. Cortes, “[Universal formula for smooth safe stabilization](https://ieeexplore.ieee.org/abstract/document/9030225),” in *Proceeding of the IEEE Conference on Decision and Control*, pp. 2373–2378, 2019.
 
-- M. H. Cohen, P. Ong, G. Bahati, and A. D. Ames, “Characterizing smooth safety filters via the implicit function theorem,” *arXiv preprint arXiv:2309.12614*, 2023.
+- M. H. Cohen, P. Ong, G. Bahati, and A. D. Ames, “[Characterizing smooth safety filters via the implicit function theorem](https://ieeexplore.ieee.org/abstract/document/10352951),” *IEEE Control Systems Letters*, 2023.
 
 ### Backstepping
-- A. J. Taylor, P. Ong, T. G. Molnar, and A. D. Ames, “Safe backstepping with control barrier functions,” in *Proc. Conf. Decis. Control*, pp. 5775–5782, 2022.
+- A. J. Taylor, P. Ong, T. G. Molnar, and A. D. Ames, “[Safe backstepping with control barrier functions](https://ieeexplore.ieee.org/abstract/document/9992763),” in *Proceeding of the IEEE Conference on Decision and Control*, pp. 5775–5782, 2022.
 
 ### CBFs via Reduced-Order Models
 - T. G. Molnar, R. K. Cosner, A. W. Singletary, W. Ubellacker,
-and A. D. Ames, “Model-free safety-critical control for robotic
-systems,” *IEEE Robotics and Automation Letters*, vol. 7, no. 2,
+and A. D. Ames, “[Model-free safety-critical control for robotic
+systems](https://ieeexplore.ieee.org/abstract/document/9652122),” *IEEE Robotics and Automation Letters*, vol. 7, no. 2,
 pp. 944–951, 2022.
 
-- T. G. Molnar and A. D. Ames, “Safety-critical control with
-bounded inputs via reduced order models,” in *Proc. Amer. Control Conf.*, pp. 1414–1421, 2023.
+- T. G. Molnar and A. D. Ames, “[Safety-critical control with
+bounded inputs via reduced order models](https://arxiv.org/abs/2303.03247),” in *Proc. Amer. Control Conf.*, pp. 1414–1421, 2023.
 
 - A. W. Singletary, K. Klingebiel, J. Bourne, A. Browning,
-P. Tokumaru, and A. D. Ames, “Comparative analysis of control barrier functions and artificial potential fields for obstacle avoidance,” in *Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems*, pp. 8129–8136,
+P. Tokumaru, and A. D. Ames, “[Comparative analysis of control barrier functions and artificial potential fields for obstacle avoidance](https://ieeexplore.ieee.org/abstract/document/9636670),” in *Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems*, pp. 8129–8136,
 2021
 
-- A. Singletary, S. Kolathaya, and A. D. Ames, “Safety-critical
-kinematic control of robotic systems,” *IEEE Contr. Syst. Lett.*,
+- A. Singletary, S. Kolathaya, and A. D. Ames, “[Safety-critical
+kinematic control of robotic systems](https://ieeexplore.ieee.org/abstract/document/9319250),” *IEEE Control Systems Letters*,
 vol. 6, pp. 139–144, 2022.
 
 - A. W. Singletary, W. Guffey, T. Molnar, R. Sinnet, and
-A. D. Ames, “Safety-critical manipulation for collision-free food
-preparation,” *IEEE Robotics and Automation Letters*, vol. 7,
+A. D. Ames, “[Safety-critical manipulation for collision-free food
+preparation](https://ieeexplore.ieee.org/abstract/document/9834089),” *IEEE Robotics and Automation Letters*, vol. 7,
 no. 4, pp. 10954–10961, 2022.
