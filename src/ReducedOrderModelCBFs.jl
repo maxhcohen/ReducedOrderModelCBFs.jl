@@ -26,6 +26,7 @@ export InvertedPendulum
 export PlanarSegway
 export DoublePendulum
 export CartPole
+export Pendubot
 
 # Export controllers
 export FeedbackController
@@ -69,6 +70,7 @@ include("system_library/inverted_pendulum.jl")
 include("system_library/planar_segway.jl")
 include("system_library/double_pendulum.jl")
 include("system_library/cartpole.jl")
+include("system_library/pendubot.jl")
 
 # Include barrier templates
 include("cbf_library/circular_obstacle.jl")
