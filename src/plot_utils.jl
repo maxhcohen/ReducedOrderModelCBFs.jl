@@ -73,13 +73,16 @@ get_colors() = mycolors
 get_color_palette() =  parse.(Colorant, mypalette)
 
 # Default plot settings for PGFplots
+ratio = 1.15
+fig_width = 4.0
+fig_height = fig_width/1.15
 ax_theme = @pgf {
     "semithick", 
     tick_style={"semithick", color="black"}, 
     legend_style={draw="none", fill="none", legend_cell_align="left", font="\\footnotesize"},
     max_space_between_ticks=100,
-    width="6in",
-    height="4in",
+    width="$fig_width"*"in",
+    height="$fig_width"*"in",
     tick_label_style={font="\\footnotesize"},
     xlabel_style={font="\\small"},
     ylabel_style={font="\\small"},
