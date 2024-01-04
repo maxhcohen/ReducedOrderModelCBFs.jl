@@ -47,7 +47,11 @@ function to_control_affine(Σ::RoboticSystem)
         else
             q = x[1:Σ.n]
             v = x[Σ.n+1:end]
-            return vcat(zeros(Σ.n, Σ.m), Σ.M(q)\Σ.B(q))
+            if Σ.m == 1
+                return vcat(zeros(Σ.n), Σ.M(q)\Σ.B(q))
+            else
+                return vcat(zeros(Σ.n, Σ.m), Σ.M(q)\Σ.B(q))
+            end
         end
     end
 
