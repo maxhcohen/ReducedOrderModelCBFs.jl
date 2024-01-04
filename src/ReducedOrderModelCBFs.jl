@@ -7,6 +7,8 @@ using DifferentialEquations
 using Distributions
 using Colors
 using PGFPlotsX
+using JuMP
+using OSQP
 
 # Export types
 export ControlAffineSystem
@@ -32,6 +34,7 @@ export Pendubot
 export FeedbackController
 export ReluSafetyFilter
 export SmoothSafetyFilter
+export CBFQP
 
 # Export barrier templates
 export CircularObstacle
@@ -79,6 +82,7 @@ include("cbf_library/square_obstacle.jl")
 # Inlcude various controllers
 include("controller_library/relu_safety_filter.jl")
 include("controller_library/smooth_safety_filter.jl")
+include("controller_library/cbf_qp.jl")
 
 # Include plot utils
 include("plot_utils.jl")
