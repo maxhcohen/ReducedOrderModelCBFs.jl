@@ -35,6 +35,7 @@ export FeedbackController
 export ReluSafetyFilter
 export SmoothSafetyFilter
 export CBFQP
+export TunableCBFQP
 
 # Export barrier templates
 export CircularObstacle
@@ -83,6 +84,7 @@ include("cbf_library/square_obstacle.jl")
 include("controller_library/relu_safety_filter.jl")
 include("controller_library/smooth_safety_filter.jl")
 include("controller_library/cbf_qp.jl")
+include("controller_library/tunable_cbf_qp.jl")
 
 # Include plot utils
 include("plot_utils.jl")
