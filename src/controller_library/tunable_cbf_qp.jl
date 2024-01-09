@@ -4,7 +4,7 @@ end
 
 (k::TunableCBFQP)(x) = k.get_input(x)
 
-function TunableCBFQP(Σ::ControlAffineSystem, cbf::ControlBarrierFunction, αd::Float64, kd::Function)
+function TunableCBFQP(Σ::ControlAffineSystem, cbf::ControlBarrierFunction, αd::Float64, kd::Function; relax=false)
     # System dimensions
     m = Σ.m
 
@@ -29,6 +29,11 @@ function TunableCBFQP(Σ::ControlAffineSystem, cbf::ControlBarrierFunction, αd:
         # Set CBF constraint
         @constraint(model, Lfh(x) + Lgh(x)*u ≥ -α*h(x))
 
+        # Make sure coefficients are positive
+        if !relax
+            @constraint(model, α ≥ 0.0)
+        end
+
         # Solve QP
         optimize!(model)
 
@@ -43,7 +48,10 @@ function TunableCBFQP(Σ::ControlAffineSystem, cbf::ControlBarrierFunction, αd:
     return TunableCBFQP(get_input)
 end
 
-function TunableCBFQP(Σ::ControlAffineSystem, cbfs::Vector{ControlBarrierFunction}, αds::Vector{Float64}, kd::Function)
+function TunableCBFQP(
+    Σ::ControlAffineSystem, cbfs::Vector{ControlBarrierFunction}, αds::Vector{Float64}, kd::Function;
+    relax=false
+)
     # System dimensions
     m = Σ.m
     N = length(cbfs)
@@ -77,6 +85,13 @@ function TunableCBFQP(Σ::ControlAffineSystem, cbfs::Vector{ControlBarrierFuncti
             @constraint(model, Lfh(x) + Lgh(x)*u ≥ -α*h(x))
         end
 
+        # Make sure coefficients are positive
+        if !relax
+            for α in αs
+                @constraint(model, α ≥ 0.0)
+            end
+        end
+
         # Solve QP
         optimize!(model)
 
@@ -89,4 +104,18 @@ function TunableCBFQP(Σ::ControlAffineSystem, cbfs::Vector{ControlBarrierFuncti
     end
 
     return TunableCBFQP(get_input)
+end
+
+function TunableCBFQP(Σr::RoboticSystem, cbfs::ControlBarrierFunction, αds::Float64, kd::Function; relax=false)
+    # Convert robotic system to control affine
+    n, m, f, g = to_control_affine(Σr)
+    Σ = CustomControlAffineSystem(n, m, f, g)
+    return TunableCBFQP(Σ, cbfs, αds, kd, relax=relax)
+end
+
+function TunableCBFQP(Σr::RoboticSystem, cbfs::Vector{ControlBarrierFunction}, αds::Vector{Float64}, kd::Function; relax=false)
+    # Convert robotic system to control affine
+    n, m, f, g = to_control_affine(Σr)
+    Σ = CustomControlAffineSystem(n, m, f, g)
+    return TunableCBFQP(Σ, cbfs, αds, kd, relax=relax)
 end
