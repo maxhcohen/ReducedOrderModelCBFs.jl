@@ -57,3 +57,15 @@ function to_control_affine(Σ::RoboticSystem)
 
     return n, m, f, g
 end
+
+"""
+    CustomControlAffineSystem
+
+On-the-fly definition of control affine system.
+"""
+struct CustomControlAffineSystem <: ControlAffineSystem
+    n::Int
+    m::Int
+    f::Function
+    g::Function
+end
