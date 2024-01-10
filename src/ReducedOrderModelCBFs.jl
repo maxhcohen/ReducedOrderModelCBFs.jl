@@ -21,6 +21,7 @@ export dynamics
 export smooth_conjunction
 
 # Export systems
+export CustomControlAffineSystem
 export SingleIntegrator
 export DoubleIntegrator
 export Unicycle
@@ -36,6 +37,7 @@ export ReluSafetyFilter
 export SmoothSafetyFilter
 export CBFQP
 export TunableCBFQP
+export CLFMinNorm
 
 # Export barrier templates
 export CircularObstacle
@@ -85,6 +87,7 @@ include("controller_library/relu_safety_filter.jl")
 include("controller_library/smooth_safety_filter.jl")
 include("controller_library/cbf_qp.jl")
 include("controller_library/tunable_cbf_qp.jl")
+include("controller_library/clf_min_norm.jl")
 
 # Include plot utils
 include("plot_utils.jl")
