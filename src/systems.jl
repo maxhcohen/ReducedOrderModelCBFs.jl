@@ -59,7 +59,7 @@ function to_control_affine(Σ::RoboticSystem)
 end
 
 """
-    CustomControlAffineSystem
+    CustomControlAffineSystem <: ControlAffineSystem
 
 On-the-fly definition of control affine system.
 """
@@ -68,4 +68,16 @@ struct CustomControlAffineSystem <: ControlAffineSystem
     m::Int
     f::Function
     g::Function
+end
+
+"""
+    CustomControlAffineSystem(Σ::RoboticSystem)
+
+Construct a control affine system from a robotic system.
+"""
+function CustomControlAffineSystem(Σ::RoboticSystem)
+    # Get control affine representation of robotic system
+    n, m, f, g = to_control_affine(Σ)
+
+    return CustomControlAffineSystem(n, m, f, g)
 end
