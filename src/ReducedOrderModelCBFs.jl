@@ -38,6 +38,7 @@ export SmoothSafetyFilter
 export CBFQP
 export TunableCBFQP
 export CLFMinNorm
+export StateFeedbackController
 
 # Export barrier templates
 export CircularObstacle
