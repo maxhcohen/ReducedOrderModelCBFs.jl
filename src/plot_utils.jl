@@ -86,6 +86,8 @@ ax_theme = @pgf {
     tick_label_style={font="\\footnotesize"},
     xlabel_style={font="\\small"},
     ylabel_style={font="\\small"},
+    xlabel_shift="-4pt",
+    ylabel_shift="-4pt",
 }
 plt_theme = @pgf {"very thick", "no marks", line_join="round", line_cap="round"}
 get_ax_theme() = ax_theme
