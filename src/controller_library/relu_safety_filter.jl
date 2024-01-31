@@ -85,4 +85,4 @@ end
 
 # Some helper functions
 relu(x) = max(0,x)
-λRelu(a, b) = b == 0.0 ? 0.0 : relu(-a/sqrt(b))/sqrt(b)
+λRelu(a, b) = b > 0.0 ? relu(-a/b) : 0.0
