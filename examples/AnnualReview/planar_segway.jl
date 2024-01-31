@@ -10,7 +10,8 @@ using PGFPlotsX
 # Safety constraint for reduced-order model
 xmax = 2.0
 h0(x) = xmax - x[1] # Don't crash into a wall located at x = 2m
-cbf = ControlBarrierFunction(h0, s -> 0.5*s)
+# cbf = ControlBarrierFunction(h0, s -> 0.5*s)
+cbf = ControlBarrierFunction(h0, s -> 0.3*s)
 
 # Desired input for reduced order model
 kd0(x) = [1.0, 0.0] # Move forward with a desired velocity of 1 m/s
@@ -50,6 +51,7 @@ end
 
 # Instantiate tracking controller
 Kṗ = 50.0
+# Kṗ = 30.0
 Kφ = 150.0
 Kφ̇ = 40.0
 k_sontag = SegwayTrackingController(Kṗ, Kφ, Kφ̇, k0_sontag)
@@ -90,3 +92,5 @@ ax = @pgf Axis(
 
 # pgfsave("planar_segway1.pdf", ax)
 # pgfsave("planar_segway2.pdf", ax)
+# pgfsave("planar_segway3.pdf", ax)
+# pgfsave("planar_segway4.pdf", ax)
