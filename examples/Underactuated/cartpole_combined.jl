@@ -88,13 +88,17 @@ ts = 0.0:dt:T
 sol = simulate(Σr, (q,q̇,t) -> k(q,q̇), q0, q̇0, T)
 
 # Plot results
+ax_theme = get_ax_theme()
+plt_theme = get_plt_theme()
+colors = get_colors()
 fig1 = @pgf Axis(
     {
         xlabel=raw"$t$",
-        ylabel=raw"$p(t)$",
+        ylabel=raw"$x(t)$",
+        ax_theme...,
     },
-    Plot({"smooth", "thick"}, Coordinates(ts, sol.(ts, idxs=1))),
-    Plot({"smooth", "thick"}, Coordinates([0,T], [pmax, pmax])),
+    Plot({plt_theme..., color=colors[1]}, Coordinates(ts, sol.(ts, idxs=1))),
+    Plot({plt_theme...,}, Coordinates([0,T], [pmax, pmax])),
 )
 
 fig2 = @pgf Axis(
@@ -117,11 +121,17 @@ fig3 = @pgf Axis(
 
 fig4 = @pgf Axis(
     {
-        xlabel=raw"$p$",
+        ax_theme...,
+        width="2.4in",
+        height="2.1in",
+        xlabel=raw"$x$",
         ylabel=raw"$\theta$",
+        xmin=-5.5,
     },
-    Plot({"smooth", "thick", color="blue"}, Coordinates(sol.(ts, idxs=1), sol.(ts, idxs=2))),
-    Plot({"smooth", "thick"}, Coordinates([pmax, pmax], [-θmax, θmax])),
-    Plot({"smooth", "thick"}, Coordinates([-5, pmax], [θmax, θmax])),
-    Plot({"smooth", "thick"}, Coordinates([-5, pmax], -[θmax, θmax])),
+    Plot({plt_theme..., color=colors[1]}, Coordinates(sol.(ts, idxs=1), sol.(ts, idxs=2))),
+    Plot({plt_theme...,}, Coordinates([pmax, pmax], [-θmax, θmax])),
+    Plot({plt_theme...,}, Coordinates([-6, pmax], [θmax, θmax])),
+    Plot({plt_theme...,}, Coordinates([-6, pmax], -[θmax, θmax])),
 )
+
+# pgfsave("cartpole_combined.pdf", fig4)
