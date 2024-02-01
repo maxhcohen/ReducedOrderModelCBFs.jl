@@ -9,6 +9,7 @@ using Colors
 using PGFPlotsX
 using JuMP
 using OSQP
+using Quaternions
 
 # Export types
 export ControlAffineSystem
@@ -30,6 +31,7 @@ export PlanarSegway
 export DoublePendulum
 export CartPole
 export PlanarQuadrotor
+export Quadrotor
 
 # Export controllers
 export FeedbackController
@@ -39,6 +41,7 @@ export CBFQP
 export TunableCBFQP
 export CLFMinNorm
 export StateFeedbackController
+export DiffFlatQuadController
 
 # Export barrier templates
 export CircularObstacle
@@ -61,6 +64,9 @@ export get_ax_theme
 export get_plt_theme
 export plot_defaults
 
+# Export other stuff
+export rotmatrix_from_quat
+
 
 # Include source code
 include("systems.jl")
@@ -78,6 +84,7 @@ include("system_library/planar_segway.jl")
 include("system_library/double_pendulum.jl")
 include("system_library/cartpole.jl")
 include("system_library/planar_quadrotor.jl")
+include("system_library/quadrotor.jl")
 
 # Include barrier templates
 include("cbf_library/circular_obstacle.jl")
