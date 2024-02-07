@@ -79,10 +79,41 @@ end
 # Smooth universal formulas
 λSontag(a, b, σ) = b == 0.0 ? 0.0 : (-a + sqrt(a^2 + σ*b^2))/b
 λHalfSontag(a, b, σ) = 0.5*λSontag(a, b, σ)
-λSoftplus(a,b, σ) = b == 0.0 ? 0.0 : σ*log(1.0 + exp(-a/(b*σ)))
-λGaussian(a, b, σ) = b == 0.0 ? 0.0 : σ*norm_pdf(a/(b*σ))/norm_cdf(a/(b*σ))
+# λSoftplus(a,b, σ) = b == 0.0 ? 0.0 : σ*log(1.0 + exp(-a/(b*σ)))
+λSoftplus(a,b, σ) = b ≤ 0.0 ? 0.0 : σ*log(1.0 + exp(-a/(b*σ)))
+# λGaussian(a, b, σ) = b == 0.0 ? 0.0 : σ*norm_pdf(a/(b*σ))/norm_cdf(a/(b*σ))
+λGaussian(a, b, σ) = b ≤ 0.0 ? 0.0 : σ*norm_pdf(a/(b*σ))/norm_cdf(a/(b*σ))
+
+# function λSoftplus(a,b, σ)
+#     if b == 0.0
+#         return 0.0
+#     elseif b > 0.0
+#         return σ*log(1.0 + exp(-a/(b*σ)))
+#     elseif b < 0.0
+#         return -σ*log(1.0 + exp(a/(b*σ)))
+#     end
+# end
+
+# function λGaussian(a, b, σ)
+#     if b == 0.0
+#         return 0.0
+#     elseif b < 0.0
+#         return -σ*norm_pdf(a/(b*σ))/(1.0 - norm_cdf(a/(b*σ)))
+#     elseif b > 0.0 
+#         return σ*norm_pdf(a/(b*σ))/(norm_cdf(a/(b*σ)) -1.0)
+#     end
+# end
 
 # Some helper functions
 norm_dist = Normal()
+norm_dist_σ(σ) = Normal(0.0, σ)
 norm_pdf(x) = pdf(norm_dist, x)
 norm_cdf(x) = cdf(norm_dist, x)
+function norm_pdf(x, σ)
+    dist = Normal(0.0, σ)
+    pdf(dist, x)
+end
+function norm_cdf(x, σ)
+    dist = Normal(0.0, σ)
+    cdf(dist, x)
+end
