@@ -63,6 +63,9 @@ export get_color_palette
 export get_ax_theme
 export get_plt_theme
 export plot_defaults
+export get_ieee_theme_large
+export get_ieee_theme_medium
+export TextNode
 
 # Export other stuff
 export rotmatrix_from_quat

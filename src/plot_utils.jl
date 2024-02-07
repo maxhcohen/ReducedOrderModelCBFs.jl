@@ -93,3 +93,46 @@ plt_theme = @pgf {"very thick", "no marks", line_join="round", line_cap="round"}
 get_ax_theme() = ax_theme
 get_plt_theme() = plt_theme
 plot_defaults() = get_ax_theme(), get_plt_theme(), get_colors()
+
+# Plot settings for IEEE style figures
+ieee_textwidth = 7.0
+ieee_column_sep = 0.2
+ieee_column_width = (ieee_textwidth - ieee_column_sep)/2
+ieee_ratio = 1.5 # TODO: determine if we want something else, maybe 1.5
+
+ieee_theme = @pgf {
+    "semithick", 
+    tick_style={"semithick", color="black"}, 
+    legend_style={draw="none", fill="none", legend_cell_align="left", font="\\footnotesize"},
+    max_space_between_ticks=100,
+    tick_label_style={font="\\footnotesize"},
+    xlabel_style={font="\\small"},
+    ylabel_style={font="\\small"},
+    xlabel_shift="-4pt",
+    ylabel_shift="-4pt",
+}
+
+# Setting for large figures - take up an entire column
+ieee_width_large = ieee_column_width
+ieee_height_large = ieee_width_large/ieee_ratio
+ieee_theme_large = @pgf {
+    ieee_theme...,
+    width="$ieee_width_large"*"in",
+    height="$ieee_height_large"*"in",
+}
+
+# Setting for medium figures - take up half column
+ieee_width_medium = ieee_textwidth/3.0
+ieee_height_medium = ieee_width_medium/ieee_ratio
+ieee_theme_medium = @pgf {
+    ieee_theme...,
+    width="$ieee_width_medium"*"in",
+    height="$ieee_height_medium"*"in",
+}
+
+# Function to get IEEE themes
+get_ieee_theme_large() = ieee_theme_large
+get_ieee_theme_medium() = ieee_theme_medium
+
+# Place Text in plots
+TextNode(x, y, text) = [raw"\node at ", Coordinate(x, y), text, ";"]
