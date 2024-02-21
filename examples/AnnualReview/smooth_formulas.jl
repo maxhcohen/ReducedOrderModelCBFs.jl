@@ -49,7 +49,7 @@ b = -2.0:0.01:2.0
         width="3.5in",
         height="2.22in",
         legend_pos="north west",
-        # title=L"a=1",
+        title=L"a=1",
     },
     Plot({plt_theme..., color="black"}, Coordinates(b, ReducedOrderModelCBFs.λRelu.(a, b))),
     LegendEntry("ReLU"),
@@ -75,7 +75,7 @@ b = 0.1:0.01:2.0
         ylabel=L"\lambda(a,b)",
         xmin=0.5,
         xmax=2.0,
-        width="3.33in",
+        width="3.5in",
         height="2.22in",
         legend_pos="north east",
         title=L"a=-1",
@@ -93,5 +93,5 @@ b = 0.1:0.01:2.0
 )
 
 pgfsave("smooth_formulas.pdf", ax)
-pgfsave("smooth_formulas_b1.pdf", ax2)
-pgfsave("smooth_formulas_b3.pdf", ax3)
+pgfsave("smooth_formulas_b1_new.pdf", ax2)
+pgfsave("smooth_formulas_b3_new.pdf", ax3)
