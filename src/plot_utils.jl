@@ -97,7 +97,8 @@ plot_defaults() = get_ax_theme(), get_plt_theme(), get_colors()
 # Plot settings for IEEE style figures
 ieee_textwidth = 7.0
 ieee_column_sep = 0.2
-ieee_column_width = (ieee_textwidth - ieee_column_sep)/2
+# ieee_column_width = (ieee_textwidth - ieee_column_sep)/2
+ieee_column_width = ieee_textwidth/2
 ieee_ratio = 1.5 # TODO: determine if we want something else, maybe 1.5
 
 ieee_theme = @pgf {
@@ -130,9 +131,19 @@ ieee_theme_medium = @pgf {
     height="$ieee_height_medium"*"in",
 }
 
+# Setting for small figures - used for two side by side figures in one column
+ieee_width_small = ieee_column_width/2
+ieee_height_small = ieee_width_small/ieee_ratio
+ieee_theme_small = @pgf {
+    ieee_theme...,
+    width="$ieee_width_small"*"in",
+    height="$ieee_height_small"*"in",
+}
+
 # Function to get IEEE themes
 get_ieee_theme_large() = ieee_theme_large
 get_ieee_theme_medium() = ieee_theme_medium
+get_ieee_theme_small() = ieee_theme_small
 
 # Place Text in plots
 TextNode(x, y, text) = [raw"\node at ", Coordinate(x, y), text, ";"]
