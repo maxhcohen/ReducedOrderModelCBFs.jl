@@ -41,7 +41,7 @@ end
 
 function SmoothSafetyFilter(
     Σ::ControlAffineSystem, cbf::ControlBarrierFunction, kd::Function;
-    formula="half-sontag", σ=0.1
+    formula="half-sontag", σ=0.1, ε=0.0
 )
     # Pull out dynamics and CBF
     n = Σ.n
@@ -54,7 +54,7 @@ function SmoothSafetyFilter(
     ∇h(x) = n == 1 ? ForwardDiff.derivative(h, x) : ForwardDiff.gradient(h, x)
     Lfh(x) = ∇h(x)'f(x)
     Lgh(x) = ∇h(x)'g(x)
-    a(x) = Lfh(x) + Lgh(x)*kd(x) + α(h(x))
+    a(x) = ε == 0.0 ? Lfh(x) + Lgh(x)*kd(x) + α(h(x)) : Lfh(x) + Lgh(x)*kd(x) + α(h(x)) - (1/ε)*norm(Lgh(x))^2
     b(x) = norm(Lgh(x))^2
 
     # Select smooth universal formula
