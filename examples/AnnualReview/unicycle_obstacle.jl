@@ -34,7 +34,7 @@ k0ω(x) = k0(x)/norm(k0(x)) # Only valid for k0(x) ≠ 0
 
 # CBF for full-order dynamics
 μ = 1.0
-h(x) = h0(x[1:2]) - (0.5/μ)*norm(ξ(x) - k0(x[1:2]))^2
+h(x) = h0(x[1:2]) - (0.5/μ)*norm(ξ(x) - k0ω(x[1:2]))^2
 cbf = ControlBarrierFunction(h, s -> s);
 
 # Desired controller for full-order system

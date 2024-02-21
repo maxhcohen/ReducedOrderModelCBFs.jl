@@ -10,16 +10,19 @@ using PGFPlotsX
 # Safety constraint for reduced-order model
 xmax = 2.0
 h0(x) = xmax - x[1] # Don't crash into a wall located at x = 2m
-cbf = ControlBarrierFunction(h0, s -> 0.5*s)
+cbf = ControlBarrierFunction(h0, s -> 0.6*s)
+# cbf = ControlBarrierFunction(h0, s -> 0.3*s)
 
 # Desired input for reduced order model
 kd0(x) = [1.0, 0.0] # Move forward with a desired velocity of 1 m/s
 
 # Reduced-Order Safety filter
-k0_sontag = SmoothSafetyFilter(Σ0, cbf, kd0, formula="sontag", σ=0.1);
-k0_half_sontag = SmoothSafetyFilter(Σ0, cbf, kd0, formula="half-sontag", σ=0.1);
-k0_softplus = SmoothSafetyFilter(Σ0, cbf, kd0, formula="softplus", σ=0.1);
-k0_gaussian = SmoothSafetyFilter(Σ0, cbf, kd0, formula="gaussian", σ=0.1);
+# ε = 20.0
+ε = 8.0
+k0_sontag = SmoothSafetyFilter(Σ0, cbf, kd0, formula="sontag", σ=0.1, ε=ε);
+k0_half_sontag = SmoothSafetyFilter(Σ0, cbf, kd0, formula="half-sontag", σ=0.1, ε=ε);
+k0_softplus = SmoothSafetyFilter(Σ0, cbf, kd0, formula="softplus", σ=0.1, ε=ε);
+k0_gaussian = SmoothSafetyFilter(Σ0, cbf, kd0, formula="gaussian", σ=0.1, ε=ε);
 
 # Now load in full-order model
 Σ = PlanarSegway(RoboticSystem)
@@ -50,6 +53,7 @@ end
 
 # Instantiate tracking controller
 Kṗ = 50.0
+# Kṗ = 30.0
 Kφ = 150.0
 Kφ̇ = 40.0
 k_sontag = SegwayTrackingController(Kṗ, Kφ, Kφ̇, k0_sontag)
@@ -90,3 +94,7 @@ ax = @pgf Axis(
 
 # pgfsave("planar_segway1.pdf", ax)
 # pgfsave("planar_segway2.pdf", ax)
+# pgfsave("planar_segway3.pdf", ax)
+# pgfsave("planar_segway4.pdf", ax)
+pgfsave("planar_segway5.pdf", ax)
+# pgfsave("planar_segway6.pdf", ax)

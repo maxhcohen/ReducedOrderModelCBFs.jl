@@ -57,3 +57,8 @@ end
 function simulate(Σ::RoboticSystem, k::FeedbackController, q0, v0, T)
     return simulate(Σ, (q,v,t) -> k(q, v), q0, v0, T)
 end
+
+# Callbacks to terminate solution if we get NaNs (i.e., of our controller is ill-defined)
+termination_condition(u, t, integrator) = isnan(norm(u))
+termination_affect!(integrator) = terminate!(integrator)
+termination_callback = DiscreteCallback(termination_condition, termination_affect!)

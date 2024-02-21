@@ -47,9 +47,37 @@ function to_control_affine(Σ::RoboticSystem)
         else
             q = x[1:Σ.n]
             v = x[Σ.n+1:end]
-            return vcat(zeros(Σ.n, Σ.m), Σ.M(q)\Σ.B(q))
+            if Σ.m == 1
+                return vcat(zeros(Σ.n), Σ.M(q)\Σ.B(q))
+            else
+                return vcat(zeros(Σ.n, Σ.m), Σ.M(q)\Σ.B(q))
+            end
         end
     end
 
     return n, m, f, g
+end
+
+"""
+    CustomControlAffineSystem <: ControlAffineSystem
+
+On-the-fly definition of control affine system.
+"""
+struct CustomControlAffineSystem <: ControlAffineSystem
+    n::Int
+    m::Int
+    f::Function
+    g::Function
+end
+
+"""
+    CustomControlAffineSystem(Σ::RoboticSystem)
+
+Construct a control affine system from a robotic system.
+"""
+function CustomControlAffineSystem(Σ::RoboticSystem)
+    # Get control affine representation of robotic system
+    n, m, f, g = to_control_affine(Σ)
+
+    return CustomControlAffineSystem(n, m, f, g)
 end

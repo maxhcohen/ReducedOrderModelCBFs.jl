@@ -7,6 +7,9 @@ using DifferentialEquations
 using Distributions
 using Colors
 using PGFPlotsX
+using JuMP
+using OSQP
+using Quaternions
 
 # Export types
 export ControlAffineSystem
@@ -19,6 +22,7 @@ export dynamics
 export smooth_conjunction
 
 # Export systems
+export CustomControlAffineSystem
 export SingleIntegrator
 export DoubleIntegrator
 export Unicycle
@@ -26,11 +30,18 @@ export InvertedPendulum
 export PlanarSegway
 export DoublePendulum
 export CartPole
+export PlanarQuadrotor
+export Quadrotor
 
 # Export controllers
 export FeedbackController
 export ReluSafetyFilter
 export SmoothSafetyFilter
+export CBFQP
+export TunableCBFQP
+export CLFMinNorm
+export StateFeedbackController
+export DiffFlatQuadController
 
 # Export barrier templates
 export CircularObstacle
@@ -52,6 +63,13 @@ export get_color_palette
 export get_ax_theme
 export get_plt_theme
 export plot_defaults
+export get_ieee_theme_large
+export get_ieee_theme_medium
+export get_ieee_theme_small
+export TextNode
+
+# Export other stuff
+export rotmatrix_from_quat
 
 
 # Include source code
@@ -69,6 +87,8 @@ include("system_library/inverted_pendulum.jl")
 include("system_library/planar_segway.jl")
 include("system_library/double_pendulum.jl")
 include("system_library/cartpole.jl")
+include("system_library/planar_quadrotor.jl")
+include("system_library/quadrotor.jl")
 
 # Include barrier templates
 include("cbf_library/circular_obstacle.jl")
@@ -77,6 +97,9 @@ include("cbf_library/square_obstacle.jl")
 # Inlcude various controllers
 include("controller_library/relu_safety_filter.jl")
 include("controller_library/smooth_safety_filter.jl")
+include("controller_library/cbf_qp.jl")
+include("controller_library/tunable_cbf_qp.jl")
+include("controller_library/clf_min_norm.jl")
 
 # Include plot utils
 include("plot_utils.jl")
