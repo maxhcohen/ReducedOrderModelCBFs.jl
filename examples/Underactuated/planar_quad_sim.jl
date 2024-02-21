@@ -7,10 +7,6 @@ using PGFPlotsX
 # Load in model
 Σ = PlanarQuadrotor(RoboticSystem)
 
-# Output
-# y(q) = q[2]
-# J(q) = ForwardDiff.gradient(y, q)'
-
 y(q) = [q[2], q[3]]
 J(q) = ForwardDiff.jacobian(y, q)
 
@@ -20,10 +16,8 @@ zmax = 0.1
 θmax = π/4
 ellipse(x, y, xo, yo, a, b) = 1 - ((x - xo)^2/a^2) - ((y- yo)^2/b^2)
 h0(y) = ellipse(y[1], y[2], zc, 0.0, zc-zmax, θmax)
-# h0(y) = y - zmax
 
-# Reduced-order model: 1D single integrator
-# Σ0 = CustomControlAffineSystem(1, 1, x -> 0.0, x -> 1.0)
+# Reduced-order model
 Σ0 = CustomControlAffineSystem(2, 2, x -> [0.0, 0.0], x -> diagm(ones(2)))
 
 # Smooth safety filter
@@ -54,6 +48,7 @@ sol = simulate(Σ, kCBF, q0, q̇0, T)
 
 # Do some plots
 ax_theme = get_ax_theme()
+colors = get_colors()
 ts = 0.0:0.05:T
 fig1 = @pgf Axis(
     {
@@ -108,7 +103,7 @@ fig3 = @pgf Axis(
 )
 
 # Plot planar position of quadrotor
-l = 0.5
+l = 0.3
 function plot_quad(t)
     p1 = @pgf Plot(
         {
@@ -130,21 +125,23 @@ function plot_quad(t)
         ),
     )
 
-    p2 = @pgf Plot({mark="*", color="black"}, Coordinates([sol.(t, idxs=1)], [sol.(t, idxs=2)]))
+    p2 = @pgf Plot({mark="*", color="black", mark_size=1.5}, Coordinates([sol.(t, idxs=1)], [sol.(t, idxs=2)]))
 
     return [p1, p2]
 end
+
+ax_theme = get_ieee_theme_large()
 fig4 = @pgf Axis(
     {
         ax_theme...,
         xlabel=raw"$x$",
         ylabel=raw"$z$",
-        width="3.5in",
-        height="3.0in",
-        xmin=-5,
+        xmin=-3.3,
         xmax=5,
+        ymax=2.5,
+        ymin=-0.5,
     },
-    Plot({"smooth", very_thick}, Coordinates(sol.(ts, idxs=1), sol.(ts, idxs=2))),
+    Plot({"smooth", very_thick, color=colors[1]}, Coordinates(sol.(ts, idxs=1), sol.(ts, idxs=2))),
     Plot({"smooth", thick, "dashed"}, Coordinates([-5, 5], [zmax, zmax])),
     plot_quad(0.0),
     plot_quad(0.3),
@@ -156,16 +153,91 @@ fig4 = @pgf Axis(
     plot_quad(5.0),
     plot_quad(8.0),
     plot_quad(T),
+    [raw"\filldraw[gray, thick, opacity=0.4] (-4,-2) -- (5,-2) -- (5,0.1) -- (-4, 0.1) -- cycle;"],
+    [raw"\node at ", Coordinate(x0-0.2, z0+0.2),raw"{$\mathbf{q}_0$};"],
+    [raw"\node at ", Coordinate(sol(T, idxs=1), sol(T, idxs=2)-0.2),raw"{$\mathbf{q}_{f}$};"],
+    [raw"\node at ", Coordinate(-2.9, zmax+0.1),raw"{$z_{\min}$};"],
+    # [raw"\node at ", Coordinate(2.0, -0.2),raw"{$h_1(\mathbf{y}(\mathbf{q}))<0$};"],
+    # TextNode(3.0, 1.0, raw"{$h_1(\mathbf{y}(\mathbf{q}))\geq 0$}"),
 )
+
 # pgfsave("quadrotor_falling.pdf", fig4)
-# fig5 = @pgf Axis(
-#     {
-#         xlabel=raw"$t$",
-#         ylabel=raw"$x(t)$",
-#         width="6in",
-#         height="4in",
-#         xmin=0,
-#         xmax=T,
-#     },
-#     Plot({"smooth", very_thick}, Coordinates(ts, sol.(ts, idxs=1)))
-# )
+
+# Make group plot of height and theta
+ax_theme_small = get_ieee_theme_small()
+
+fig5 = @pgf Axis(
+    {
+        ax_theme_small...,
+        # xlabel=raw"$t$",
+        ylabel=raw"$z(t)$",
+        xmin=0.0,
+        xmax=T,
+        ymin=-0.5,
+        xticklabel=raw"\empty",
+    },
+    Plot({"smooth", very_thick, color=colors[3]}, Coordinates(ts, sol.(ts, idxs=2))),
+    Plot({"smooth", "dashed"}, Coordinates([0, T], [0.1, 0.1])),
+)
+
+fig6 = @pgf Axis(
+    {
+        ax_theme_small...,
+        # xlabel=raw"$t$",
+        ylabel=raw"$\theta(t)$",
+        xmin=0.0,
+        xmax=T,
+        ymin=-π/3,
+        ymax=π/3,
+        xticklabel=raw"\empty",
+        ytick=[-1.0, 0.0, 1.0]
+    },
+    Plot({"smooth", very_thick, color=colors[4]}, Coordinates(ts, sol.(ts, idxs=3))),
+    Plot({"smooth", "dashed"}, Coordinates([0, T], [θmax, θmax])),
+    Plot({"smooth", "dashed"}, Coordinates([0, T], [-θmax, -θmax])),
+)
+
+fig7 = @pgf Axis(
+    {
+        ax_theme_small...,
+        xlabel=raw"$t$",
+        # ylabel=raw"$h(t)$",
+        xmin=0.0,
+        xmax=T,
+    },
+    Plot({"smooth", very_thick, color=colors[1],}, Coordinates(ts, h0.(y.(sol.(ts, idxs=1:3))))),
+    LegendEntry(raw"$\psi$"),
+    Plot({"smooth", very_thick, color=colors[2], dashed}, Coordinates(ts, h.(sol.(ts, idxs=1:3),sol.(ts, idxs=4:6)))),
+    LegendEntry(raw"$h$"),
+)
+
+u(t) = kCBF(sol(t, idxs=1:3), sol(t, idxs=4:6))
+u1(t) = u(t)[1]
+u2(t) = u(t)[2]
+fig8 = @pgf Axis(
+    {
+        ax_theme_small...,
+        xlabel=raw"$t$",
+        ylabel=raw"$\mathbf{u}(t)$",
+        xmin=0.0,
+        xmax=T,
+    },
+    Plot({"smooth", very_thick, color=colors[1]}, Coordinates(ts, u1.(ts))),
+    LegendEntry(raw"$F$"),
+    Plot({"smooth", very_thick, color=colors[2]}, Coordinates(ts, u2.(ts))),
+    LegendEntry(raw"$M$"),
+)
+
+# Make group plot
+@pgf gp = GroupPlot(
+    {
+        group_style = { group_size = "2 by 2", horizontal_sep="0.5in", vertical_sep="0.1in"},
+    }
+)
+
+@pgf push!(gp, fig5)
+@pgf push!(gp, fig6)
+@pgf push!(gp, fig7)
+@pgf push!(gp, fig8)
+
+# pgfsave("quadrotor_z_theta.pdf", gp)
