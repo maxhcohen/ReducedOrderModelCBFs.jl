@@ -65,6 +65,7 @@ export get_plt_theme
 export plot_defaults
 export get_ieee_theme_large
 export get_ieee_theme_medium
+export get_ieee_theme_small
 export TextNode
 
 # Export other stuff
