@@ -88,7 +88,7 @@ ts = 0.0:dt:T
 sol = simulate(Σr, (q,q̇,t) -> k(q,q̇), q0, q̇0, T)
 
 # Plot results
-ax_theme = get_ax_theme()
+ax_theme = get_ieee_theme_medium()
 plt_theme = get_plt_theme()
 colors = get_colors()
 fig1 = @pgf Axis(
@@ -119,19 +119,42 @@ fig3 = @pgf Axis(
     Plot({"smooth", "thick"}, Coordinates(ts, k.(sol.(ts, idxs=1:2), sol.(ts, idxs=3:4)))),
 )
 
+# fig4 = @pgf Axis(
+#     {
+#         ax_theme...,
+#         width="2.4in",
+#         height="2.1in",
+#         xlabel=raw"$x$",
+#         ylabel=raw"$\theta$",
+#         xmin=-5.5,
+#     },
+#     Plot({plt_theme..., color=colors[1]}, Coordinates(sol.(ts, idxs=1), sol.(ts, idxs=2))),
+#     Plot({plt_theme...,}, Coordinates([pmax, pmax], [-θmax, θmax])),
+#     Plot({plt_theme...,}, Coordinates([-6, pmax], [θmax, θmax])),
+#     Plot({plt_theme...,}, Coordinates([-6, pmax], -[θmax, θmax])),
+# )
+
 fig4 = @pgf Axis(
     {
         ax_theme...,
-        width="2.4in",
-        height="2.1in",
         xlabel=raw"$x$",
         ylabel=raw"$\theta$",
         xmin=-5.5,
+        xmax=3.5,
+        ymin=-1.0,
+        ymax=1.0,
     },
+    [raw"\filldraw[gray, thick, opacity=0.0, fill opacity=0.4] (2,1) -- (3.5,1) -- (3.5,-1) -- (2, -1) -- cycle;"],
+    [raw"\filldraw[gray, thick, opacity=0.0, fill opacity=0.4] (-5.5,1) -- (2,1) -- (2,0.262) -- (-5.5, 0.262) -- cycle;"],
+    [raw"\filldraw[gray, thick, opacity=0.0, fill opacity=0.4] (-5.5,-1) -- (2,-1) -- (2,-0.262) -- (-5.5, -0.262) -- cycle;"],
     Plot({plt_theme..., color=colors[1]}, Coordinates(sol.(ts, idxs=1), sol.(ts, idxs=2))),
     Plot({plt_theme...,}, Coordinates([pmax, pmax], [-θmax, θmax])),
     Plot({plt_theme...,}, Coordinates([-6, pmax], [θmax, θmax])),
     Plot({plt_theme...,}, Coordinates([-6, pmax], -[θmax, θmax])),
+    TextNode(p0+0.5, θ0-0.1, raw"{$\mathbf{q}_0$}"),
+    TextNode(-1, -0.5, raw"{$-\theta_{\max}$}"),
+    TextNode(-1, 0.5, raw"{$\theta_{\max}$}"),
+    TextNode(2.4, -0.5, raw"{$x_{\max}$}"),
 )
 
 # pgfsave("cartpole_combined.pdf", fig4)

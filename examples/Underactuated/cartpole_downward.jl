@@ -65,7 +65,7 @@ ts = 0.0:dt:T
 sol = simulate(Σr, kCBF, q0, q̇0, T)
 
 # Plot results
-ax_theme = get_ax_theme()
+ax_theme = get_ieee_theme_medium()
 plt_theme = get_plt_theme()
 colors = get_colors()
 fig1 = @pgf Axis(
@@ -86,19 +86,41 @@ fig2 = @pgf Axis(
     Plot({"smooth", "thick"}, Coordinates([0, T], [θd - θmax, θd - θmax])),
 )
 
+# fig3 = @pgf Axis(
+#     {
+#         ax_theme...,
+#         xlabel=raw"$x$",
+#         ylabel=raw"$\theta$",
+#         width="2.4in",
+#         height="2.1in",
+#         xmin=-5.5,
+#     },
+#     Plot({plt_theme..., color=colors[1]}, Coordinates(sol.(ts, idxs=1), sol.(ts, idxs=2))),
+#     Plot({plt_theme...}, Coordinates([pmax, pmax], [θd - θmax, θd + θmax])),
+#     Plot({plt_theme...}, Coordinates([-6, pmax], [θd + θmax, θd + θmax])),
+#     Plot({plt_theme...}, Coordinates([-6, pmax], [θd - θmax, θd - θmax])),
+# )
+
 fig3 = @pgf Axis(
     {
         ax_theme...,
         xlabel=raw"$x$",
         ylabel=raw"$\theta$",
-        width="2.4in",
-        height="2.1in",
         xmin=-5.5,
+        xmax=3.5,
+        ymin=-1.0,
+        ymax=1.0,
     },
+    [raw"\filldraw[gray, thick, opacity=0.4] (-5.5,1) -- (3.5,1) -- (3.5,0.262) -- (-5.5, 0.262) -- cycle;"],
+    [raw"\filldraw[gray, thick, opacity=0.4] (-5.5,-1) -- (3.5,-1) -- (3.5,-0.262) -- (-5.5, -0.262) -- cycle;"],
     Plot({plt_theme..., color=colors[1]}, Coordinates(sol.(ts, idxs=1), sol.(ts, idxs=2))),
-    Plot({plt_theme...}, Coordinates([pmax, pmax], [θd - θmax, θd + θmax])),
-    Plot({plt_theme...}, Coordinates([-6, pmax], [θd + θmax, θd + θmax])),
-    Plot({plt_theme...}, Coordinates([-6, pmax], [θd - θmax, θd - θmax])),
+    # Plot({plt_theme..., dashed}, Coordinates([pmax, pmax], [-2, 2])),
+    Plot({plt_theme...,}, Coordinates([-6, 4], [θd + θmax, θd + θmax])),
+    Plot({plt_theme...,}, Coordinates([-6, 4], [θd - θmax, θd - θmax])),
+    TextNode(p0+0.3, θ0+0.1, raw"{$\mathbf{q}_0$}"),
+    TextNode(-1, -0.5, raw"{$-\theta_{\max}$}"),
+    TextNode(-1, 0.5, raw"{$\theta_{\max}$}"),
+    # TextNode(1.2, -0.7, raw"{$x_{\max}$}"),
 )
 
-# pgfsave("cartpole_down.pdf", fig3)
+pgfsave("cartpole_down.pdf", fig3)
