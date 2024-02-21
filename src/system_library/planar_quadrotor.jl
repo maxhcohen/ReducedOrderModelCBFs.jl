@@ -65,5 +65,26 @@ function simulate(Σ::PlanarQuadrotorRobotic, q0, v0, T)
     affect!(integrator) = integrator.u.x[1][2] = 0.0
     cb = ContinuousCallback(condition, affect!)
 
-    return solve(ODEProblem(odefun, x0, (0,T)), callback=cb)
+    cb_set = CallbackSet(cb, termination_callback)
+
+    return solve(ODEProblem(odefun, x0, (0,T)), callback=cb_set)
 end
+
+# function simulate(Σ::PlanarQuadrotorRobotic, k::FeedbackController, q0, v0, T)
+#     x0 = ArrayPartition(q0, v0)
+#     n = Σ.n
+#     function odefun(dx, x, p, t)
+#         q = n == 1 ? x.x[1][1] : x.x[1]
+#         v = n == 1 ? x.x[2][1] : x.x[2]
+#         dx.x[1] .= n == 1 ? [v] : v
+#         dx.x[2] .= n == 1 ? [dynamics(Σ, q, v, k(q, v, t))] : dynamics(Σ, q, v, k(q, v, t))
+#     end
+
+#     condition(u, t, integrator) = u.x[1][2]
+#     affect!(integrator) = integrator.u.x[1][2] = 0.0
+#     cb = ContinuousCallback(condition, affect!)
+
+#     cb_set = CallbackSet(cb, termination_callback)
+
+#     return solve(ODEProblem(odefun, x0, (0,T)), callback=cb_set)
+# end
