@@ -83,6 +83,40 @@ function ReluSafetyFilter(Σr::RoboticSystem, hr::Function, α::Function, kdr::F
     return ReluSafetyFilter(get_input)
 end
 
+"""
+    TimeVaryingReluSafetyFilter <: SafetyFilter
+
+CBF-based safety filter resulting from solving a CBF-QP with a single constraint and a time-varying nominal input.
+"""
+struct TimeVaryingReluSafetyFilter <: SafetyFilter
+    get_input::Function
+end
+(k::TimeVaryingReluSafetyFilter)(x, t) = k.get_input(x, t)
+
+"""
+    TimeVaryingReluSafetyFilter(Σ::ControlAffineSystem, h::Function, α::Function, kd::Function; ε=0.0)
+
+Construct a TimeVaryingReluSafetyFilter for a control affine system.
+"""
+function TimeVaryingReluSafetyFilter(Σ::ControlAffineSystem, h::Function, α::Function, kd::Function; ε=0.0)
+    # Get control affine dynamics
+    n = Σ.n
+    f = Σ.f
+    g = Σ.g
+
+    # Compute Lie derivatives
+    ∇h(x) = n == 1 ? ForwardDiff.derivative(h, x) : ForwardDiff.gradient(h, x) 
+    Lfh(x) = ∇h(x)'f(x)
+    Lgh(x) = ∇h(x)'g(x)
+    a(x,t) = ε == 0.0 ? Lfh(x) + Lgh(x)*kd(x,t) + α(h(x)) : Lfh(x) + Lgh(x)*kd(x,t) + α(h(x)) - (1/ε)*norm(Lgh(x))^2
+    b(x) = norm(Lgh(x))^2
+
+    # Solution of CBF-QP
+    k(x, t) = kd(x, t) + λRelu(a(x, t), b(x))*Lgh(x)'
+
+    return TimeVaryingReluSafetyFilter(k)
+end
+
 # Some helper functions
 relu(x) = max(0,x)
 λRelu(a, b) = b > 0.0 ? relu(-a/b) : 0.0

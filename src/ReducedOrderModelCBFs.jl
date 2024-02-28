@@ -42,6 +42,7 @@ export TunableCBFQP
 export CLFMinNorm
 export StateFeedbackController
 export DiffFlatQuadController
+export TimeVaryingReluSafetyFilter
 
 # Export barrier templates
 export CircularObstacle
