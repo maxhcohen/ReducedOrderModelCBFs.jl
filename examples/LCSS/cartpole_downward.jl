@@ -63,6 +63,7 @@ ts = 0.0:dt:T
 
 # Simulate
 sol = simulate(Σr, kCBF, q0, q̇0, T)
+sol2 = simulate(Σr, (q,q̇,t) -> kd(q,q̇), q0, q̇0, T)
 
 # Plot results
 ax_theme = get_ieee_theme_medium()
@@ -78,12 +79,21 @@ fig1 = @pgf Axis(
 
 fig2 = @pgf Axis(
     {
+        ax_theme...,
         xlabel=raw"$t$",
         ylabel=raw"$\theta(t)$",
+        xmin=0,
+        xmax=T,
+        ymin=θd - θmax - 0.1,
+        ymax=θd + θmax + 0.1,
+        # legend_pos="south east",
     },
-    Plot({"smooth", "thick"}, Coordinates(ts, sol.(ts, idxs=2))),
-    Plot({"smooth", "thick"}, Coordinates([0, T], [θd + θmax, θd + θmax])),
-    Plot({"smooth", "thick"}, Coordinates([0, T], [θd - θmax, θd - θmax])),
+    Plot({plt_theme..., color=colors[3]}, Coordinates(ts, sol.(ts, idxs=2))),
+    Plot({plt_theme..., color=colors[4], dotted, opacity=0.6}, Coordinates(ts, sol2.(ts, idxs=2))),
+    Plot({plt_theme..., dashed}, Coordinates([0, T], [θd + θmax, θd + θmax])),
+    Plot({plt_theme..., dashed}, Coordinates([0, T], [θd - θmax, θd - θmax])),
+    # [raw"\filldraw[gray, thick, opacity=0.4] (0,0.262) -- (10,0.262) -- (10,0.4) -- (0, 0.4) -- cycle;"],
+    # [raw"\filldraw[gray, thick, opacity=0.4] (0,-0.262) -- (10,-0.262) -- (10,-0.4) -- (0, -0.4) -- cycle;"],
 )
 
 # fig3 = @pgf Axis(
@@ -123,4 +133,4 @@ fig3 = @pgf Axis(
     # TextNode(1.2, -0.7, raw"{$x_{\max}$}"),
 )
 
-pgfsave("cartpole_down.pdf", fig3)
+# pgfsave("cartpole_down.pdf", fig3)
