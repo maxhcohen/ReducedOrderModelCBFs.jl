@@ -34,11 +34,11 @@ kd(q, q̇) = -Kp*(q[1] - xd) - Kd*q̇[1] + 0.05*q̇[2]
 kd0(y) = 0.0
 
 # Smooth safety filter
-α = 5.0
+α = 1.0
 k0 = SmoothSafetyFilter(Σ0, h0, r -> α*r, kd0)
 
 # Now build CBF for full-order system
-μ = 10.0
+μ = 1.0
 h(q,q̇) = h0(y(q)) - (0.5/μ)*norm(J(q)*q̇ - k0(y(q)))^2
 
 # Get safety filer
@@ -50,7 +50,7 @@ B = Σr.B
 A(q) = J(q)*inv(D(q))*B(q)
 
 # Initial conditions
-p0 = -5.0
+p0 = 0.0
 θ0 = 0.2
 ṗ0 = 0.0
 θ̇0 = 0.0
@@ -78,7 +78,7 @@ fig1 = @pgf Axis(
         ylabel=raw"$x(t)$",
         xmin=0,
         xmax=T,
-        ymax=4.0,
+        ymax=3.5,
         legend_pos="south east",
         height="1.7in",
         width="1.9in",
@@ -89,9 +89,9 @@ fig1 = @pgf Axis(
     LegendEntry("No CBF"),
     Plot({plt_theme...,dashed}, Coordinates([0,T], [pmax, pmax])),
     [raw"\filldraw[gray, thick, opacity=0.4] (0,2) -- (10,2) -- (10,4) -- (0, 4) -- cycle;"],
-    TextNode(1.3, 1.0, raw"{\footnotesize$x_{\max}$}"),
+    TextNode(1.3, 2.2, raw"{\footnotesize$x_{\max}$}"),
 )
-pgfsave("cartpole_wall_x_small.pdf", fig1)
+# pgfsave("cartpole_wall_x_small.pdf", fig1)
 
 fig2 = @pgf Axis(
     {
@@ -142,11 +142,10 @@ fig4 = @pgf Axis(
         ax_theme...,
         xlabel=raw"$x$",
         ylabel=raw"$\dot{x}$",
-        xmin=0.0,
+        xmin=p0,
         xmax=3,
         ymin=-3,
         ymax=3,
-        # major_tick_length="0.075cm",
         view="{0}{90}",
         "colormap/blackwhite",
         height="1.7in",
@@ -160,5 +159,7 @@ fig4 = @pgf Axis(
     ),   
     Plot({plt_theme..., dashed}, Coordinates([pmax, pmax], [-3, 3])),
     [raw"\filldraw[gray, thick, opacity=0.4] (2,-3) -- (2,3) -- (4,3) -- (4, -3) -- cycle;"],
+    Plot({plt_theme..., color=colors[1]}, Coordinates(sol.(ts, idxs=1), sol.(ts, idxs=3))),
+    Plot({plt_theme..., color=colors[2], dotted, opacity=0.6,}, Coordinates(sol2.(ts, idxs=1), sol2.(ts, idxs=3))),
 )
 # pgfsave("x_safe_set.pdf", fig4)

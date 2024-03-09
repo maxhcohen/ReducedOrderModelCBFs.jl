@@ -83,9 +83,9 @@ fig2 = @pgf Axis(
         height="1.7in",
         width="1.9in",
     },
-    Plot({plt_theme..., color=colors[3]}, Coordinates(ts, sol.(ts, idxs=2))),
+    Plot({plt_theme..., color=colors[1]}, Coordinates(ts, sol.(ts, idxs=2))),
     LegendEntry("CBF"),
-    Plot({plt_theme..., color=colors[4], dotted, opacity=0.6}, Coordinates(ts, sol2.(ts, idxs=2))),
+    Plot({plt_theme..., color=colors[2], dotted, opacity=0.6}, Coordinates(ts, sol2.(ts, idxs=2))),
     LegendEntry("No CBF"),
     Plot({plt_theme..., dashed}, Coordinates([0, T], [θd + θmax, θd + θmax])),
     Plot({plt_theme..., dashed}, Coordinates([0, T], [θd - θmax, θd - θmax])),
@@ -169,6 +169,7 @@ fig4 = @pgf Axis(
     Plot({plt_theme..., dashed}, Coordinates([θd+θmax, θd+θmax], [-3, 3])),
     [raw"\filldraw[gray, thick, opacity=0.4] (2.88,-3) -- (2.88,3) -- (2,3) -- (2, -3) -- cycle;"],
     [raw"\filldraw[gray, thick, opacity=0.4] (3.4,-3) -- (3.4,3) -- (4,3) -- (4, -3) -- cycle;"],
-    # [raw"\filldraw[gray, thick, opacity=0.4] (-5.5,-1) -- (3.5,-1) -- (3.5,-0.262) -- (-5.5, -0.262) -- cycle;"],
+    Plot({plt_theme..., color=colors[1]}, Coordinates(sol.(ts, idxs=2), sol.(ts, idxs=4))),
+    Plot({plt_theme..., color=colors[2], dotted, opacity=0.6}, Coordinates(sol2.(ts, idxs=2), sol2.(ts, idxs=4))),
 )
 # pgfsave("theta_safe_set.pdf", fig4)
