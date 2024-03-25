@@ -1,10 +1,8 @@
 # ReducedOrderModelCBFs
 
-This repository contains a Julia package that implements various control barrier function (CBFs) techniques based on reduced-order models. The code here is based on a collection of papers (see related works at the end of this readme) and may be used to reconstruct many of the examples from our papers:
+This repository contains a Julia package that implements various control barrier function (CBFs) techniques based on reduced-order models. The code here is based on a collection of papers (see related works at the end of this readme) and may be used to reconstruct many of the examples from our paper:
 
  M. H. Cohen, T. G. Molnar, and A. D. Ames, "[Safety-Critical Control of Autonomous Systems: Control Barrier Functions via Reduced-Order Models](https://www.sciencedirect.com/science/article/pii/S1367578824000166)," Annual Reviews in Control, vol. 57, pp. 100947, 2024;
-
- M. H. Cohen, R. K. Cosner, and A. D. Ames, "Constructive Safety-Critical Control for Feedback Linearizable Systems," under review.
 
 The code corresponding to the examples in the above papers can be found in the examples folder of this repo. If you find this code useful, please consider citing the above papers or some of the works mentioned at the end of this README.
 
