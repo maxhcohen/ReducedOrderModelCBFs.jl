@@ -10,6 +10,7 @@ using PGFPlotsX
 using JuMP
 using OSQP
 using Quaternions
+using Plots
 
 # Export types
 export ControlAffineSystem
@@ -59,6 +60,8 @@ export λGaussian
 export meshgrid
 export mesh_vector_field
 export vector_field_colors
+export plot_vector_field
+export plot_vector_field!
 export get_colors
 export get_color_palette
 export get_ax_theme

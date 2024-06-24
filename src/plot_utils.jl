@@ -37,6 +37,18 @@ function mesh_vector_field(Xs, Ys, f::Function, scale::Float64, normalize_arrows
     return dx, dy
 end
 
+function plot_vector_field(xs, ys, f::Function, scale; kwargs...)
+    Xs, Ys = meshgrid(xs, ys)
+    dX, dY = mesh_vector_field(Xs, Ys, f, scale, true)
+    quiver(Xs, Ys, quiver=(dX, dY); kwargs...)
+end
+
+function plot_vector_field!(xs, ys, f::Function, scale; kwargs...)
+    Xs, Ys = meshgrid(xs, ys)
+    dX, dY = mesh_vector_field(Xs, Ys, f, scale, true)
+    quiver!(Xs, Ys, quiver=(dX, dY); kwargs...)
+end
+
 """
     vector_field_colors(Xs, Ys, f::Function)
 
